@@ -14,8 +14,10 @@ const difficultyLevels = {
 
 let selectedWordObj, selectedWord, guessedLetters, remainingGuesses, maxGuesses;
 let score = 0;
+let highScore = 0;
 let timerInterval;
 let timeLeft = 60;
+let hintUsed = false;
 
 const wordDisplay = document.getElementById("word-display");
 const letterButtons = document.getElementById("letter-buttons");
@@ -23,14 +25,17 @@ const hint = document.getElementById("hint");
 const difficultySelect = document.getElementById("difficulty-select");
 const remainingGuessesDisplay = document.getElementById("remaining-guesses");
 const scoreDisplay = document.getElementById("score-display");
+const highScoreDisplay = document.getElementById("high-score");
 const timerDisplay = document.getElementById("timer-display");
 const restartButton = document.getElementById("restart-button");
+const hintButton = document.getElementById("hint-button");
 const message = document.getElementById("message");
 const hangmanCanvas = document.getElementById("hangman-canvas");
 const ctx = hangmanCanvas.getContext("2d");
 
 difficultySelect.addEventListener("change", setDifficulty);
 restartButton.addEventListener("click", restartGame);
+hintButton.addEventListener("click", useHint);
 
 function initializeGame() {
     selectedWordObj = wordsWithHints[Math.floor(Math.random() * wordsWithHints.length)];
@@ -38,6 +43,7 @@ function initializeGame() {
     guessedLetters = [];
     remainingGuesses = maxGuesses;
     timeLeft = 60; // Reset timer
+    hintUsed = false; // Reset hint usage
 
     for (let i = 0; i < selectedWord.length; i++) {
         guessedLetters.push("_");
@@ -46,6 +52,7 @@ function initializeGame() {
     hint.textContent = `Hint: ${selectedWordObj.hint}`;
     remainingGuessesDisplay.textContent = `Remaining Guesses: ${remainingGuesses}`;
     scoreDisplay.textContent = `Score: ${score}`;
+    highScoreDisplay.textContent = highScore;
     timerDisplay.textContent = timeLeft;
     message.textContent = "";
 
@@ -94,6 +101,10 @@ function checkGameStatus() {
     if (guessedLetters.join("") === selectedWord) {
         message.textContent = "Congratulations! You've won!";
         score++;
+        if (score > highScore) {
+            highScore = score;
+            highScoreDisplay.textContent = highScore;
+        }
         disableAllButtons();
         clearInterval(timerInterval); // Stop timer
     } else if (remainingGuesses === 0 || timeLeft === 0) {
@@ -199,6 +210,15 @@ function setDifficulty() {
 function restartGame() {
     clearInterval(timerInterval); // Stop timer
     initializeGame();
+}
+
+function useHint() {
+    if (!hintUsed) {
+        message.textContent = `Hint: ${selectedWordObj.hint}`;
+        remainingGuesses--;
+        remainingGuessesDisplay.textContent = `Remaining Guesses: ${remainingGuesses}`;
+        hintUsed = true;
+    }
 }
 
 initializeGame();

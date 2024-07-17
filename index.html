@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hangman Game - Version 6</title>
+    <title>Hangman Game - Version 7</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -19,12 +19,14 @@
                 <option value="easy">Easy</option>
                 <option value="medium">Medium</option>
                 <option value="hard">Hard</option>
-            </select>
+            </select>High 
         </div>
         <p id="remaining-guesses"></p>
         <p id="score-display"></p>
+        <p id="high-score-display">High Score: <span id="high-score">0</span></p>
         <p id="timer">Time Left: <span id="timer-display">60</span> seconds</p>
         <button id="restart-button">Restart Game</button>
+        <button id="hint-button">Use Hint</button>
         <p id="message"></p>
     </div>
     <script src="script.js"></script>
