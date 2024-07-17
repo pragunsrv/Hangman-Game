@@ -1,10 +1,20 @@
-const words = ["javascript", "hangman", "coding", "programming", "developer"];
-let selectedWord = words[Math.floor(Math.random() * words.length)];
+const wordsWithHints = [
+    { word: "javascript", hint: "A popular programming language" },
+    { word: "hangman", hint: "A classic word guessing game" },
+    { word: "coding", hint: "The process of writing computer programs" },
+    { word: "programming", hint: "Creating software applications" },
+    { word: "developer", hint: "A person who writes code" }
+];
+
+let selectedWordObj = wordsWithHints[Math.floor(Math.random() * wordsWithHints.length)];
+let selectedWord = selectedWordObj.word;
 let guessedLetters = [];
 let remainingGuesses = 6;
 
 const wordDisplay = document.getElementById("word-display");
 const letterButtons = document.getElementById("letter-buttons");
+const hint = document.getElementById("hint");
+const remainingGuessesDisplay = document.getElementById("remaining-guesses");
 const message = document.getElementById("message");
 const hangmanCanvas = document.getElementById("hangman-canvas");
 const ctx = hangmanCanvas.getContext("2d");
@@ -14,6 +24,8 @@ function initializeGame() {
         guessedLetters.push("_");
     }
     wordDisplay.textContent = guessedLetters.join(" ");
+    hint.textContent = `Hint: ${selectedWordObj.hint}`;
+    remainingGuessesDisplay.textContent = `Remaining Guesses: ${remainingGuesses}`;
     createLetterButtons();
     drawHangman();
 }
@@ -48,6 +60,7 @@ function guessLetter(letter) {
     }
 
     wordDisplay.textContent = guessedLetters.join(" ");
+    remainingGuessesDisplay.textContent = `Remaining Guesses: ${remainingGuesses}`;
     checkGameStatus();
     drawHangman();
 }

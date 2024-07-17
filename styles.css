@@ -47,6 +47,17 @@ body {
     cursor: not-allowed;
 }
 
+#hint {
+    margin-top: 20px;
+    font-size: 16px;
+    font-style: italic;
+}
+
+#remaining-guesses {
+    margin-top: 10px;
+    font-size: 18px;
+}
+
 #message {
     margin-top: 20px;
     font-size: 18px;
