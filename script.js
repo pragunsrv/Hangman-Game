@@ -14,6 +14,8 @@ const difficultyLevels = {
 
 let selectedWordObj, selectedWord, guessedLetters, remainingGuesses, maxGuesses;
 let score = 0;
+let timerInterval;
+let timeLeft = 60;
 
 const wordDisplay = document.getElementById("word-display");
 const letterButtons = document.getElementById("letter-buttons");
@@ -21,19 +23,21 @@ const hint = document.getElementById("hint");
 const difficultySelect = document.getElementById("difficulty-select");
 const remainingGuessesDisplay = document.getElementById("remaining-guesses");
 const scoreDisplay = document.getElementById("score-display");
-const resetButton = document.getElementById("reset-button");
+const timerDisplay = document.getElementById("timer-display");
+const restartButton = document.getElementById("restart-button");
 const message = document.getElementById("message");
 const hangmanCanvas = document.getElementById("hangman-canvas");
 const ctx = hangmanCanvas.getContext("2d");
 
 difficultySelect.addEventListener("change", setDifficulty);
-resetButton.addEventListener("click", resetGame);
+restartButton.addEventListener("click", restartGame);
 
 function initializeGame() {
     selectedWordObj = wordsWithHints[Math.floor(Math.random() * wordsWithHints.length)];
     selectedWord = selectedWordObj.word;
     guessedLetters = [];
     remainingGuesses = maxGuesses;
+    timeLeft = 60; // Reset timer
 
     for (let i = 0; i < selectedWord.length; i++) {
         guessedLetters.push("_");
@@ -42,11 +46,13 @@ function initializeGame() {
     hint.textContent = `Hint: ${selectedWordObj.hint}`;
     remainingGuessesDisplay.textContent = `Remaining Guesses: ${remainingGuesses}`;
     scoreDisplay.textContent = `Score: ${score}`;
+    timerDisplay.textContent = timeLeft;
     message.textContent = "";
 
     letterButtons.innerHTML = "";
     createLetterButtons();
     drawHangman();
+    startTimer();
 }
 
 function createLetterButtons() {
@@ -89,9 +95,11 @@ function checkGameStatus() {
         message.textContent = "Congratulations! You've won!";
         score++;
         disableAllButtons();
-    } else if (remainingGuesses === 0) {
+        clearInterval(timerInterval); // Stop timer
+    } else if (remainingGuesses === 0 || timeLeft === 0) {
         message.textContent = `Game Over! The word was: ${selectedWord}`;
         disableAllButtons();
+        clearInterval(timerInterval); // Stop timer
     }
     scoreDisplay.textContent = `Score: ${score}`;
 }
@@ -170,13 +178,27 @@ function drawHangman() {
     }
 }
 
+function startTimer() {
+    timerInterval = setInterval(() => {
+        if (timeLeft <= 0) {
+            clearInterval(timerInterval);
+            message.textContent = `Time's up! The word was: ${selectedWord}`;
+            disableAllButtons();
+        } else {
+            timeLeft--;
+            timerDisplay.textContent = timeLeft;
+        }
+    }, 1000);
+}
+
 function setDifficulty() {
     maxGuesses = difficultyLevels[difficultySelect.value].maxGuesses;
     initializeGame();
 }
 
-function resetGame() {
-    setDifficulty();
+function restartGame() {
+    clearInterval(timerInterval); // Stop timer
+    initializeGame();
 }
 
 initializeGame();
