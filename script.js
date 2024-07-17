@@ -6,26 +6,37 @@ const wordsWithHints = [
     { word: "developer", hint: "A person who writes code" }
 ];
 
-let selectedWordObj = wordsWithHints[Math.floor(Math.random() * wordsWithHints.length)];
-let selectedWord = selectedWordObj.word;
-let guessedLetters = [];
-let remainingGuesses = 6;
+let selectedWordObj, selectedWord, guessedLetters, remainingGuesses;
+let score = 0;
 
 const wordDisplay = document.getElementById("word-display");
 const letterButtons = document.getElementById("letter-buttons");
 const hint = document.getElementById("hint");
 const remainingGuessesDisplay = document.getElementById("remaining-guesses");
+const scoreDisplay = document.getElementById("score-display");
 const message = document.getElementById("message");
 const hangmanCanvas = document.getElementById("hangman-canvas");
+const resetButton = document.getElementById("reset-button");
 const ctx = hangmanCanvas.getContext("2d");
 
+resetButton.addEventListener("click", resetGame);
+
 function initializeGame() {
+    selectedWordObj = wordsWithHints[Math.floor(Math.random() * wordsWithHints.length)];
+    selectedWord = selectedWordObj.word;
+    guessedLetters = [];
+    remainingGuesses = 6;
+
     for (let i = 0; i < selectedWord.length; i++) {
         guessedLetters.push("_");
     }
     wordDisplay.textContent = guessedLetters.join(" ");
     hint.textContent = `Hint: ${selectedWordObj.hint}`;
     remainingGuessesDisplay.textContent = `Remaining Guesses: ${remainingGuesses}`;
+    scoreDisplay.textContent = `Score: ${score}`;
+    message.textContent = "";
+
+    letterButtons.innerHTML = "";
     createLetterButtons();
     drawHangman();
 }
@@ -68,11 +79,13 @@ function guessLetter(letter) {
 function checkGameStatus() {
     if (guessedLetters.join("") === selectedWord) {
         message.textContent = "Congratulations! You've won!";
+        score++;
         disableAllButtons();
     } else if (remainingGuesses === 0) {
         message.textContent = `Game Over! The word was: ${selectedWord}`;
         disableAllButtons();
     }
+    scoreDisplay.textContent = `Score: ${score}`;
 }
 
 function disableAllButtons() {
@@ -147,6 +160,10 @@ function drawHangman() {
         ctx.lineTo(180, 170);
         ctx.stroke();
     }
+}
+
+function resetGame() {
+    initializeGame();
 }
 
 initializeGame();
