@@ -16,11 +16,35 @@ body {
     text-align: center;
 }
 
+#hangman-canvas {
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    background-color: #f9f9f9;
+}
+
 #letter-buttons button {
     margin: 5px;
     padding: 10px;
     font-size: 16px;
     cursor: pointer;
+    border: none;
+    background-color: #4CAF50;
+    color: white;
+    border-radius: 4px;
+}
+
+#letter-buttons button.incorrect {
+    background-color: #f44336;
+}
+
+#letter-buttons button.correct {
+    background-color: #4CAF50;
+    cursor: not-allowed;
+}
+
+#letter-buttons button:disabled {
+    background-color: #ddd;
+    cursor: not-allowed;
 }
 
 #message {
