@@ -3,31 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hangman Game - Version 7</title>
+    <title>Hangman Game - Final Version</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="game-container">
         <h1>Hangman Game</h1>
         <canvas id="hangman-canvas" width="200" height="200"></canvas>
-        <p id="word-display"></p>
-        <div id="letter-buttons"></div>
-        <p id="hint"></p>
-        <div id="difficulty">
+        <p id="word-display" class="word-display"></p>
+        <div id="letter-buttons" class="button-container"></div>
+        <p id="hint" class="hint"></p>
+        <div id="difficulty" class="difficulty">
             <label for="difficulty-select">Select Difficulty:</label>
-            <select id="difficulty-select">
+            <select id="difficulty-select" class="select">
                 <option value="easy">Easy</option>
                 <option value="medium">Medium</option>
                 <option value="hard">Hard</option>
-            </select>High 
+            </select>
         </div>
-        <p id="remaining-guesses"></p>
-        <p id="score-display"></p>
-        <p id="high-score-display">High Score: <span id="high-score">0</span></p>
-        <p id="timer">Time Left: <span id="timer-display">60</span> seconds</p>
-        <button id="restart-button">Restart Game</button>
-        <button id="hint-button">Use Hint</button>
-        <p id="message"></p>
+        <p id="remaining-guesses" class="info"></p>
+        <p id="score-display" class="info"></p>
+        <p id="high-score-display" class="info">High Score: <span id="high-score">0</span></p>
+        <p id="timer" class="info">Time Left: <span id="timer-display">60</span> seconds</p>
+        <button id="restart-button" class="btn restart">Restart Game</button>
+        <button id="hint-button" class="btn hint">Use Hint</button>
+        <p id="message" class="message"></p>
     </div>
     <script src="script.js"></script>
 </body>

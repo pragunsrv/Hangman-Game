@@ -126,6 +126,8 @@ function drawHangman() {
     ctx.clearRect(0, 0, hangmanCanvas.width, hangmanCanvas.height);
     ctx.lineWidth = 2;
     ctx.strokeStyle = "#000";
+    ctx.lineCap = "round"; // Smooth edges
+    ctx.lineJoin = "round"; // Smooth edges
 
     // Draw base
     ctx.beginPath();
@@ -141,51 +143,47 @@ function drawHangman() {
     ctx.lineTo(150, 40);
     ctx.stroke();
 
-    if (remainingGuesses < maxGuesses) {
-        // Draw head
-        ctx.beginPath();
-        ctx.arc(150, 60, 20, 0, Math.PI * 2);
-        ctx.stroke();
-    }
+    // Draw hangman parts based on remaining guesses
+    const parts = [
+        () => { // Head
+            ctx.beginPath();
+            ctx.arc(150, 60, 20, 0, Math.PI * 2);
+            ctx.stroke();
+        },
+        () => { // Body
+            ctx.beginPath();
+            ctx.moveTo(150, 80);
+            ctx.lineTo(150, 140);
+            ctx.stroke();
+        },
+        () => { // Left arm
+            ctx.beginPath();
+            ctx.moveTo(150, 100);
+            ctx.lineTo(120, 120);
+            ctx.stroke();
+        },
+        () => { // Right arm
+            ctx.beginPath();
+            ctx.moveTo(150, 100);
+            ctx.lineTo(180, 120);
+            ctx.stroke();
+        },
+        () => { // Left leg
+            ctx.beginPath();
+            ctx.moveTo(150, 140);
+            ctx.lineTo(120, 170);
+            ctx.stroke();
+        },
+        () => { // Right leg
+            ctx.beginPath();
+            ctx.moveTo(150, 140);
+            ctx.lineTo(180, 170);
+            ctx.stroke();
+        }
+    ];
 
-    if (remainingGuesses < maxGuesses - 1) {
-        // Draw body
-        ctx.beginPath();
-        ctx.moveTo(150, 80);
-        ctx.lineTo(150, 140);
-        ctx.stroke();
-    }
-
-    if (remainingGuesses < maxGuesses - 2) {
-        // Draw left arm
-        ctx.beginPath();
-        ctx.moveTo(150, 100);
-        ctx.lineTo(120, 120);
-        ctx.stroke();
-    }
-
-    if (remainingGuesses < maxGuesses - 3) {
-        // Draw right arm
-        ctx.beginPath();
-        ctx.moveTo(150, 100);
-        ctx.lineTo(180, 120);
-        ctx.stroke();
-    }
-
-    if (remainingGuesses < maxGuesses - 4) {
-        // Draw left leg
-        ctx.beginPath();
-        ctx.moveTo(150, 140);
-        ctx.lineTo(120, 170);
-        ctx.stroke();
-    }
-
-    if (remainingGuesses < maxGuesses - 5) {
-        // Draw right leg
-        ctx.beginPath();
-        ctx.moveTo(150, 140);
-        ctx.lineTo(180, 170);
-        ctx.stroke();
+    for (let i = 0; i < maxGuesses - remainingGuesses; i++) {
+        parts[i]();
     }
 }
 
