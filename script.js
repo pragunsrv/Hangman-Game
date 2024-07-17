@@ -6,26 +6,34 @@ const wordsWithHints = [
     { word: "developer", hint: "A person who writes code" }
 ];
 
-let selectedWordObj, selectedWord, guessedLetters, remainingGuesses;
+const difficultyLevels = {
+    easy: { maxGuesses: 8 },
+    medium: { maxGuesses: 6 },
+    hard: { maxGuesses: 4 }
+};
+
+let selectedWordObj, selectedWord, guessedLetters, remainingGuesses, maxGuesses;
 let score = 0;
 
 const wordDisplay = document.getElementById("word-display");
 const letterButtons = document.getElementById("letter-buttons");
 const hint = document.getElementById("hint");
+const difficultySelect = document.getElementById("difficulty-select");
 const remainingGuessesDisplay = document.getElementById("remaining-guesses");
 const scoreDisplay = document.getElementById("score-display");
+const resetButton = document.getElementById("reset-button");
 const message = document.getElementById("message");
 const hangmanCanvas = document.getElementById("hangman-canvas");
-const resetButton = document.getElementById("reset-button");
 const ctx = hangmanCanvas.getContext("2d");
 
+difficultySelect.addEventListener("change", setDifficulty);
 resetButton.addEventListener("click", resetGame);
 
 function initializeGame() {
     selectedWordObj = wordsWithHints[Math.floor(Math.random() * wordsWithHints.length)];
     selectedWord = selectedWordObj.word;
     guessedLetters = [];
-    remainingGuesses = 6;
+    remainingGuesses = maxGuesses;
 
     for (let i = 0; i < selectedWord.length; i++) {
         guessedLetters.push("_");
@@ -114,14 +122,14 @@ function drawHangman() {
     ctx.lineTo(150, 40);
     ctx.stroke();
 
-    if (remainingGuesses < 6) {
+    if (remainingGuesses < maxGuesses) {
         // Draw head
         ctx.beginPath();
         ctx.arc(150, 60, 20, 0, Math.PI * 2);
         ctx.stroke();
     }
 
-    if (remainingGuesses < 5) {
+    if (remainingGuesses < maxGuesses - 1) {
         // Draw body
         ctx.beginPath();
         ctx.moveTo(150, 80);
@@ -129,7 +137,7 @@ function drawHangman() {
         ctx.stroke();
     }
 
-    if (remainingGuesses < 4) {
+    if (remainingGuesses < maxGuesses - 2) {
         // Draw left arm
         ctx.beginPath();
         ctx.moveTo(150, 100);
@@ -137,7 +145,7 @@ function drawHangman() {
         ctx.stroke();
     }
 
-    if (remainingGuesses < 3) {
+    if (remainingGuesses < maxGuesses - 3) {
         // Draw right arm
         ctx.beginPath();
         ctx.moveTo(150, 100);
@@ -145,7 +153,7 @@ function drawHangman() {
         ctx.stroke();
     }
 
-    if (remainingGuesses < 2) {
+    if (remainingGuesses < maxGuesses - 4) {
         // Draw left leg
         ctx.beginPath();
         ctx.moveTo(150, 140);
@@ -153,7 +161,7 @@ function drawHangman() {
         ctx.stroke();
     }
 
-    if (remainingGuesses < 1) {
+    if (remainingGuesses < maxGuesses - 5) {
         // Draw right leg
         ctx.beginPath();
         ctx.moveTo(150, 140);
@@ -162,8 +170,13 @@ function drawHangman() {
     }
 }
 
-function resetGame() {
+function setDifficulty() {
+    maxGuesses = difficultyLevels[difficultySelect.value].maxGuesses;
     initializeGame();
+}
+
+function resetGame() {
+    setDifficulty();
 }
 
 initializeGame();

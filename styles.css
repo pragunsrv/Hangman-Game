@@ -53,6 +53,20 @@ body {
     font-style: italic;
 }
 
+#difficulty {
+    margin-top: 10px;
+}
+
+#difficulty label {
+    font-size: 16px;
+    margin-right: 10px;
+}
+
+#difficulty-select {
+    padding: 5px;
+    font-size: 16px;
+}
+
 #remaining-guesses {
     margin-top: 10px;
     font-size: 18px;
